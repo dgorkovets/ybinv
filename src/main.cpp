@@ -13,11 +13,18 @@ int main()
 {
     int n = 4;
     FiniteBiquandle bq(n);
-    bq.setupOperation(0);
-    cout << bq << endl;
-
-    const vector<int>& r = Range::get(10);
-    cout << r << endl;
+    int counter = 0;
+    long all = pow(fact(n),2*n);
+    cout << all << endl;
+    for (int i = 0; i < all; i++)
+    {
+        bq.setupOperation(i);
+        if (bq.isOperationCorrect())
+        {
+            counter++;
+        }
+    }
+    cout << counter << endl;
 
     return 0;
 }

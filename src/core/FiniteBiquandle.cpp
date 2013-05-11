@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <functional>
+#include <iostream>
 #include <set>
 #include "FiniteBiquandle.h"
 #include "mathutils.h"
@@ -9,7 +10,6 @@ FiniteBiquandle::FiniteBiquandle(int size)
 {
     init(size);
 }
-
 
 triple_int FiniteBiquandle::_S1(triple_int x) const
 {
@@ -53,7 +53,7 @@ bool FiniteBiquandle::isOperationCorrect() const
         set<int> seconds;
         for (int j = 0; j < size(); ++j)
         {
-            if (op1(i, j) == i && op2(i, j) == j)
+            if (op1(j, i) == j && op2(j, i) == i)
             {
                 seconds.insert(j);
             }
@@ -79,7 +79,7 @@ bool FiniteBiquandle::isOperationCorrect() const
                 triple_int t(i,j,k);
                 if (_S1(_S2(_S1(t))) != _S2(_S1(_S2(t))))
                 {
-                    isCorrect = false;
+                    return false;
                 }
             }
         }
@@ -90,12 +90,12 @@ bool FiniteBiquandle::isOperationCorrect() const
 
 int FiniteBiquandle::op1(int x, int y) const
 {
-    return op.at(y)(x);
+    return op.at(x)(y);
 }
 
 int FiniteBiquandle::op2(int x, int y) const
 {
-    return op.at(x + size())(y);
+    return op.at(y + size())(x);
 }
 
 ostream& operator<<(ostream &os, const FiniteBiquandle &bq)
