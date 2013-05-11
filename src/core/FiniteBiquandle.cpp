@@ -1,10 +1,9 @@
 #include <algorithm>
 #include <functional>
+#include <set>
 #include "FiniteBiquandle.h"
 #include "mathutils.h"
 
-const static pair<int,int> FiniteBiquandle::_checkPairForFixedComponent::NO_PAIR= make_pair(-1, -1);
-const static pair<int,int> FiniteBiquandle::_checkPairForFixedComponent::BAD_PAIR = make_pair(-2, -2);
 
 FiniteBiquandle::FiniteBiquandle(int size)
 {
@@ -47,7 +46,6 @@ bool FiniteBiquandle::isOperationCorrect() const
     // B(x,y) = (x,y)
     const vector<int>& range = Range::get(size());
     vector<pair<int,int> > bad_pairs;
-    //transform(range.begin(), range(end), back_inserter(bad_pairs), _checkPairForFixedComponent());
     bool isCorrect = true;
 
     for (int i = 0; i < size(); ++i)
@@ -67,10 +65,22 @@ bool FiniteBiquandle::isOperationCorrect() const
         else if (seconds.size() > 1)
         {
             isCorrect = false;
-            bad_pairs.push_back(make_pair(i, *seconds.rend());
+            bad_pairs.push_back(make_pair(i, *seconds.rend()));
         }
     }
+
     // (BxId)(IdxB)(BxId) = (IdxB)(BxId)(IdxB)
+    for (int i = 0; i < size(); ++i)
+    {
+        for (int j = 0; j < size(); ++j)
+        {
+            for (int k = 0; k < size(); ++k)
+            {
+                triple_int t(i,j,k);
+
+            }
+        }
+    }
 
     return isCorrect;
 }
