@@ -77,7 +77,10 @@ bool FiniteBiquandle::isOperationCorrect() const
             for (int k = 0; k < size(); ++k)
             {
                 triple_int t(i,j,k);
-
+                if (_S1(_S2(_S1(t))) != _S2(_S1(_S2(t))))
+                {
+                    isCorrect = false;
+                }
             }
         }
     }
