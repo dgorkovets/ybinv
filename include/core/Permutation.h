@@ -31,6 +31,8 @@ public:
     void construct(long index);
     int operator()(int index) const;
     friend ostream& operator<<(ostream &os, const Permutation &perm);
+    inline int size() const { return m_size; }
+    inline bool operator==(const Permutation& other) const { return m_size == other.size() && m_content == other.m_content; }
 };
 
 ostream& operator<<(ostream &os, const Permutation &perm);
@@ -51,6 +53,14 @@ class PermutationFactory
         Permutation operator()() { return Permutation(_size, index++); }
     };
 
+    struct FindFirstNotMatchAtPos
+    {
+        int pos;
+        int matchingValue;
+        FindFirstNotMatchAtPos(int pos, int value) : pos(pos), matchingValue(value) {}
+        bool operator()(const Permutation &perm) { return perm(pos) != matchingValue; }
+    };
+
     PermutationFactory() {}
 
 public:
@@ -58,6 +68,7 @@ public:
     static const vector<Permutation>& ofSize(int size);
     static const Permutation& getPermutation(int size, long index);
     static const Permutation& getIdentityPermutation(int size);
+    static vector<Permutation>::const_iterator nextOf(const Permutation& initialperm, int pos);
 };
 
 #endif

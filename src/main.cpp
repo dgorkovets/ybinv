@@ -14,14 +14,21 @@ int main()
     int n = 4;
     FiniteBiquandle bq(n);
     int counter = 0;
-    long all = pow(fact(n),2*n);
+    long all = pow(fact(n), 2*n);
     cout << all << endl;
-    for (int i = 0; i < all; i++)
+    int i = 0;
+    while (i < 1000000)
     {
+        cout << i << " of " << all << endl;
         bq.setupOperation(i);
         if (bq.isOperationCorrect())
         {
             counter++;
+            i++;
+        }
+        else
+        {
+            
         }
     }
     cout << counter << endl;

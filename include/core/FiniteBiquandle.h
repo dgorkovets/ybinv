@@ -35,6 +35,9 @@ class FiniteBiquandle
 
 public:
 
+    static const pair<int,int> BAD_YB_PAIR;
+    static const pair<int,int> NO_FIXED_POINT_PAIR;
+
     FiniteBiquandle(int size);
     void init(int size);
     int size() const;
@@ -44,7 +47,10 @@ public:
     // and set appropriate permutations
     void setupOperation(int index);
 
+    void setPermutationIndices(const vector<int>& indices);
+
     bool isOperationCorrect() const;
+    vector<pair<int,int> > getBadPairs() const;
 
     int op1(int x, int y) const; // B_1
     int op2(int x, int y) const; // B_2

@@ -82,3 +82,10 @@ const Permutation& PermutationFactory::getIdentityPermutation(int size)
     return getPermutation(size, 0);
 }
 
+vector<Permutation>::const_iterator PermutationFactory::nextOf(const Permutation& initialperm, int pos)
+{
+    const vector<Permutation>& permset = ofSize(initialperm.size());
+    vector<Permutation>::const_iterator initPermIt = find(permset.begin(), permset.end(), initialperm);
+    vector<Permutation>::const_iterator nextperm = find_if(initPermIt, permset.end(), FindFirstNotMatchAtPos(pos, initialperm(pos)));
+    return nextperm;
+}

@@ -5,6 +5,8 @@
 #include "FiniteBiquandle.h"
 #include "mathutils.h"
 
+const pair<int,int> FiniteBiquandle::BAD_YB_PAIR = make_pair(-1,-1);
+const pair<int,int> FiniteBiquandle::NO_FIXED_POINT_PAIR = make_pair(-2,-2);
 
 FiniteBiquandle::FiniteBiquandle(int size)
 {
@@ -36,17 +38,24 @@ void FiniteBiquandle::setupOperation(int index)
 {
     Nary number(fact(size()), 2 * size());
     number.setValue(index);
-    const vector<int>& indices = number.getValue(); 
+    setPermutationIndices(number.getValue());
+}
+
+void FiniteBiquandle::setPermutationIndices(const vector<int>& indices)
+{
     op.clear();
     transform(indices.begin(), indices.end(), back_inserter(op), GetPermutationByIndex(size())); 
 }
 
 bool FiniteBiquandle::isOperationCorrect() const
 {
+    return getBadPairs().empty();
+}
+
+vector<pair<int,int> > FiniteBiquandle::getBadPairs() const
+{
     // B(x,y) = (x,y)
-    const vector<int>& range = Range::get(size());
     vector<pair<int,int> > bad_pairs;
-    bool isCorrect = true;
 
     for (int i = 0; i < size(); ++i)
     {
@@ -58,14 +67,14 @@ bool FiniteBiquandle::isOperationCorrect() const
                 seconds.insert(j);
             }
         }
+
         if (seconds.empty())
         {
-            isCorrect = false;
+            bad_pairs.push_back(NO_FIXED_POINT_PAIR);
         }
         else if (seconds.size() > 1)
         {
-            isCorrect = false;
-            bad_pairs.push_back(make_pair(i, *seconds.rend()));
+            bad_pairs.push_back(make_pair(*seconds.rend() + size(), i));
         }
     }
 
@@ -79,13 +88,13 @@ bool FiniteBiquandle::isOperationCorrect() const
                 triple_int t(i,j,k);
                 if (_S1(_S2(_S1(t))) != _S2(_S1(_S2(t))))
                 {
-                    return false;
+                    bad_pairs.push_back(BAD_YB_PAIR);
                 }
             }
         }
     }
 
-    return isCorrect;
+    return bad_pairs;
 }
 
 int FiniteBiquandle::op1(int x, int y) const
